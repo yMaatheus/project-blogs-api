@@ -2,10 +2,13 @@ const express = require('express');
 require('express-async-errors');
 
 const handleError = require('./middlewares/error.middleware');
+const authController = require('./controllers/auth.controller');
 
 const app = express();
 
 app.use(express.json());
+
+app.post('/login', authController.login);
 
 app.use(handleError);
 
