@@ -1,12 +1,12 @@
 const errorUtil = require('../helpers/error.util');
 const jwtUtil = require('../helpers/jwt.util');
 
-module.exports = (req, res, next) => {
-  const { authorization } = req.headers;
+module.exports = (req, _res, next) => {
+  const { authorization: token } = req.headers;
 
-  if (!authorization) throw errorUtil.generate(401, 'Token not found');
+  if (!token) throw errorUtil.generate(401, 'Token not found');
 
-  const user = jwtUtil.verifyToken(authorization);
+  const user = jwtUtil.verifyToken(token);
   req.user = user;
 
   next();

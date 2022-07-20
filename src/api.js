@@ -15,9 +15,7 @@ app.use(express.json());
 app.post('/login', authController.login);
 app.post('/user', userController.create);
 
-app.use(handleAutorization);
-
-app.use('/user', userRouter);
+app.use('/user', handleAutorization, userRouter);
 
 app.use(handleError);
 
