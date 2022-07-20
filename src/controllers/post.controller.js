@@ -6,10 +6,16 @@ const postController = {
 
     res.status(201).json(post);
   },
-  findAll: async (req, res) => {
+  findAll: async (_req, res) => {
     const posts = await postService.findAll();
 
     res.status(200).json(posts);
+  },
+  findById: async (req, res) => {
+    const { id } = req.params;
+    const post = await postService.findById(id);
+
+    res.status(200).json(post);
   },
 };
 
