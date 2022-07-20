@@ -12,4 +12,11 @@ const findAll = async (_req, res) => {
   res.status(200).json(users);
 };
 
-module.exports = { create, findAll };
+const findById = async (req, res) => {
+  const { id } = req.params;
+  const userById = await userService.findById(id);
+
+  res.status(200).json(userById);
+};
+
+module.exports = { create, findAll, findById };
