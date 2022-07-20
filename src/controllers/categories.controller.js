@@ -8,7 +8,11 @@ const categoriesController = {
 
     res.status(201).json(category);
   },
+  findAll: async (_req, res) => {
+    const categories = await categoriesService.findAll();
 
+    res.status(200).json(categories);
+  },
 };
 
 module.exports = categoriesController;
