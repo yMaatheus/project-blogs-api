@@ -7,6 +7,7 @@ const handleAutorization = require('./middlewares/authorization.middleware');
 const authController = require('./controllers/auth.controller');
 const userController = require('./controllers/user.controller');
 const userRouter = require('./routes/user.route');
+const categoriesRouter = require('./routes/categories.route');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.post('/login', authController.login);
 app.post('/user', userController.create);
 
 app.use('/user', handleAutorization, userRouter);
+app.use('/categories', handleAutorization, categoriesRouter);
 
 app.use(handleError);
 
