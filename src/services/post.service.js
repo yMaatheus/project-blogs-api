@@ -8,7 +8,7 @@ const config = require('../database/config/config');
 
 const sequelize = new Sequelize(config.development);
 
-const validateRequired = (post) => {
+const validateCreateRequired = (post) => {
   const schema = Joi.object({
     title: Joi.string().required(),
     content: Joi.string().required(),
@@ -16,6 +16,17 @@ const validateRequired = (post) => {
   });
 
   const { error } = schema.validate(post);
+
+  if (error) throw errorUtil.generate(400, 'Some required fields are missing');
+};
+
+const validateUpdateRequired = (body) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    content: Joi.string().required(),
+  });
+
+  const { error } = schema.validate(body);
 
   if (error) throw errorUtil.generate(400, 'Some required fields are missing');
 };
@@ -32,7 +43,7 @@ const validateCategories = async (categoryIds) => {
 
 const postService = {
   create: async ({ title, content, categoryIds }, { id: userId }) => {
-    validateRequired({ title, content, categoryIds });
+    validateCreateRequired({ title, content, categoryIds });
     await validateCategories(categoryIds);
     const result = await sequelize.transaction(async (t) => {
       const post = await BlogPost.create(
@@ -67,6 +78,18 @@ const postService = {
     });
 
     if (!post) throw errorUtil.generate(404, 'Post does not exist');
+
+    return post;
+  },
+  update: async (id, { title, content }, user) => {
+    validateUpdateRequired({ title, content });
+    const { userId } = await postService.findById(id);
+
+    if (user.id !== userId) throw errorUtil.generate(401, 'Unauthorized user');
+
+    await BlogPost.update({ title, content }, { where: { id } });
+
+    const post = await postService.findById(id);
 
     return post;
   },

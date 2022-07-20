@@ -17,6 +17,13 @@ const postController = {
 
     res.status(200).json(post);
   },
+  updateById: async (req, res) => {
+    const { id } = req.params;
+    console.log(req.user);
+    const post = await postService.update(id, req.body, req.user);
+
+    res.status(200).json(post);
+  },
 };
 
 module.exports = postController;
