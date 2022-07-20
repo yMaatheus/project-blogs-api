@@ -8,6 +8,7 @@ const authController = require('./controllers/auth.controller');
 const userController = require('./controllers/user.controller');
 const userRouter = require('./routes/user.route');
 const categoriesRouter = require('./routes/categories.route');
+const postRouter = require('./routes/post.route');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.post('/user', userController.create);
 
 app.use('/user', handleAutorization, userRouter);
 app.use('/categories', handleAutorization, categoriesRouter);
+app.use('/post', handleAutorization, postRouter);
 
 app.use(handleError);
 

@@ -20,6 +20,11 @@ const categoriesService = {
 
     return categories;
   },
+  findById: async (id) => {
+    const category = await Category.findOne({ where: { id } });
+
+    return category;
+  },
 };
 
 module.exports = categoriesService;
