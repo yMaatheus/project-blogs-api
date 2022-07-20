@@ -1,6 +1,8 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
+const errorUtil = require('./error.util');
+
 const { JWT_SECRET } = process.env;
 
 const generateToken = (data) => {
@@ -10,4 +12,14 @@ const generateToken = (data) => {
   return { token };
 };
 
-module.exports = { generateToken };
+const verifyToken = (token) => {
+  try {
+    const { data } = jwt.verify(token, JWT_SECRET);
+
+    return data;
+  } catch (_err) {
+    throw errorUtil.generate(401, 'Expired or invalid token');
+  }
+};
+
+module.exports = { generateToken, verifyToken };
