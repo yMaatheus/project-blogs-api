@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const Sequelize = require('sequelize');
-const { BlogPost, PostCategory } = require('../database/models');
+const { BlogPost, Category, PostCategory, User } = require('../database/models');
 const errorUtil = require('../helpers/error.util');
 const categoriesService = require('./categories.service');
 
@@ -46,6 +46,16 @@ const postService = {
     });
 
     return result;
+  },
+  findAll: async () => {
+    const posts = await BlogPost.findAll({
+      include: [
+        { model: User, as: 'user', attributes: { exclude: 'password' } },
+        { model: Category, as: 'categories', through: { attributes: [] } },
+      ],
+    });
+
+    return posts;
   },
 };
 
