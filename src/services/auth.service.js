@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const { User } = require('../database/models');
 const errorUtil = require('../helpers/error.util');
-const jwtUtil = require('../helpers/jwt.util');
+const jwtService = require('./jwt.service');
 
 const validateRequired = (login) => {
   const schema = Joi.object({
@@ -35,10 +35,8 @@ const authService = {
     validateEmail(email);
 
     const user = await validateLogin(email, password);
-    delete user.dataValues.password;
 
-    const token = jwtUtil.generateToken(user.dataValues);
-
+    const token = jwtService.signIn(user);
     return token;
   },
 };
