@@ -5,6 +5,7 @@ const jwtService = require('./jwt.service');
 
 const hasUser = async (email) => {
   const user = await User.findOne({ where: { email } });
+
   return user;
 };
 
@@ -23,6 +24,7 @@ const validateRequired = (displayName, email, password, image) => {
 
 const validateExists = async (email) => {
   const exists = await hasUser(email);
+
   if (exists) throw errorUtil.generate(409, 'User already registered');
 };
 
@@ -39,12 +41,18 @@ const userService = {
   },
   findAll: async () => {
     const users = await User.findAll({ attributes: { exclude: 'password' } });
+
     return users;
   },
   findById: async (id) => {
     const user = await User.findOne({ where: { id }, attributes: { exclude: 'password' } });
+
     if (!user) throw errorUtil.generate(404, 'User does not exist');
+
     return user;
+  },
+  delete: async ({ id }) => {
+    await User.destroy({ where: { id } });
   },
 };
 
