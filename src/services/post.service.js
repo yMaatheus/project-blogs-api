@@ -104,9 +104,7 @@ const postService = {
   delete: async (id, user) => {
     await validateUserAuthorization(id, user);
 
-    const result = await BlogPost.destroy({ where: { id } });
-
-    console.log(`result ${result}`);
+    await BlogPost.destroy({ where: { id } });
   },
 };
 
