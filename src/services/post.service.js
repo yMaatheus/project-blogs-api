@@ -4,6 +4,8 @@ const { BlogPost, Category, PostCategory, User } = require('../database/models')
 const errorUtil = require('../helpers/error.util');
 const categoriesService = require('./categories.service');
 
+const { Op } = Sequelize;
+
 const config = require('../database/config/config');
 
 const sequelize = new Sequelize(config.development);
@@ -29,6 +31,17 @@ const validateUpdateRequired = (body) => {
   const { error } = schema.validate(body);
 
   if (error) throw errorUtil.generate(400, 'Some required fields are missing');
+};
+
+const findAll = async () => {
+  const posts = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: { exclude: 'password' } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  return posts;
 };
 
 const findById = async (id) => {
@@ -80,16 +93,7 @@ const postService = {
 
     return result;
   },
-  findAll: async () => {
-    const posts = await BlogPost.findAll({
-      include: [
-        { model: User, as: 'user', attributes: { exclude: 'password' } },
-        { model: Category, as: 'categories', through: { attributes: [] } },
-      ],
-    });
-
-    return posts;
-  },
+  findAll,
   findById,
   update: async (id, { title, content }, user) => {
     validateUpdateRequired({ title, content });
@@ -105,6 +109,24 @@ const postService = {
     await validateUserAuthorization(id, user);
 
     await BlogPost.destroy({ where: { id } });
+  },
+  search: async (q) => {
+    if (!q) return findAll();
+
+    const result = await BlogPost.findAll({
+      where: {
+        [Op.or]: [
+          { title: { [Op.like]: `%${q}%` } },
+          { content: { [Op.like]: `%${q}%` } },
+        ],
+      },
+      include: [
+        { model: User, as: 'user', attributes: { exclude: 'password' } },
+        { model: Category, as: 'categories', through: { attributes: [] } },
+      ],
+    });
+
+    return result;
   },
 };
 
