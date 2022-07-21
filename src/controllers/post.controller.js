@@ -17,12 +17,18 @@ const postController = {
 
     res.status(200).json(post);
   },
-  updateById: async (req, res) => {
+  update: async (req, res) => {
     const { id } = req.params;
-    console.log(req.user);
     const post = await postService.update(id, req.body, req.user);
 
     res.status(200).json(post);
+  },
+  delete: async (req, res) => {
+    const { id } = req.params;
+
+    await postService.delete(id, req.user);
+
+    res.status(204).end();
   },
 };
 

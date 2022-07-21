@@ -31,6 +31,28 @@ const validateUpdateRequired = (body) => {
   if (error) throw errorUtil.generate(400, 'Some required fields are missing');
 };
 
+const findById = async (id) => {
+  const post = await BlogPost.findOne({
+    where: { id },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: 'password' } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  if (!post) throw errorUtil.generate(404, 'Post does not exist');
+
+  return post;
+};
+
+const validateUserAuthorization = async (id, { id: userId }) => {
+  const post = await findById(id);
+
+  if (userId !== post.userId) throw errorUtil.generate(401, 'Unauthorized user');
+
+  return post;
+};
+
 const validateCategories = async (categoryIds) => {
   const promises = await Promise.all(
     categoryIds.map(categoriesService.findById),
@@ -68,30 +90,23 @@ const postService = {
 
     return posts;
   },
-  findById: async (id) => {
-    const post = await BlogPost.findOne({
-      where: { id },
-      include: [
-        { model: User, as: 'user', attributes: { exclude: 'password' } },
-        { model: Category, as: 'categories', through: { attributes: [] } },
-      ],
-    });
-
-    if (!post) throw errorUtil.generate(404, 'Post does not exist');
-
-    return post;
-  },
+  findById,
   update: async (id, { title, content }, user) => {
     validateUpdateRequired({ title, content });
-    const { userId } = await postService.findById(id);
-
-    if (user.id !== userId) throw errorUtil.generate(401, 'Unauthorized user');
+    await validateUserAuthorization(id, user);
 
     await BlogPost.update({ title, content }, { where: { id } });
 
     const post = await postService.findById(id);
 
     return post;
+  },
+  delete: async (id, user) => {
+    await validateUserAuthorization(id, user);
+
+    const result = await BlogPost.destroy({ where: { id } });
+
+    console.log(`result ${result}`);
   },
 };
 
