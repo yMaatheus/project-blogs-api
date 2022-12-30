@@ -1,6 +1,9 @@
 const express = require('express');
 require('express-async-errors');
 
+const swaggerUi = require('swagger-ui-express');
+const doc = require('../swagger.json');
+
 const handleError = require('./middlewares/error.middleware');
 const handleAutorization = require('./middlewares/authorization.middleware');
 
@@ -20,6 +23,8 @@ app.post('/user', userController.create);
 app.use('/user', handleAutorization, userRouter);
 app.use('/categories', handleAutorization, categoriesRouter);
 app.use('/post', handleAutorization, postRouter);
+
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(doc));
 
 app.use(handleError);
 
