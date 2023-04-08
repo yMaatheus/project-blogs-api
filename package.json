@@ -23,8 +23,9 @@
   "scripts": {
     "prestart": "npx sequelize-cli db:create && npx sequelize-cli db:migrate",
     "start": "node .",
-    "start:test": "API_PORT=3030 NODE_ENV=test npm start",
+    "start:test": "PORT=3030 NODE_ENV=test npm start",
     "kill:test": "kill -9 $(lsof -t -i:3030) &> /dev/null",
+    "migration": "npx sequelize-cli db:create && npx sequelize-cli db:migrate",
     "drop": "npx sequelize-cli db:drop",
     "seed": "npx sequelize-cli db:seed:all",
     "pretest": "(npm run kill:test && NODE_ENV=test npm run start:test) &",
