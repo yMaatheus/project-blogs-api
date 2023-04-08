@@ -1,13 +1,73 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
+# Project Store Manager
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+Projeto realizado no módulo de Back-end durante o curso de Desenvolvimento Web pela [Trybe](https://www.betrybe.com/).
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+## 📱 Projeto
+
+Neste projeto foi desenvolvido uma aplicação em Node.js usando o pacote Sequelize para fazer um CRUD de posts, com endpoints seguindo os principios REST, para a produção de conteúdo para um blog! 
+
+* [Documentação](https://blogs-api.ymaatheus.me/api-docs)
+* [Deploy](https://blogs-api.ymaatheus.me)
+
+### 📋 Pré-requisitos
+
+Para conseguir seguir este README e rodar o projeto você pode precisar dos seguintes itens:
+
+- [Git](https://git-scm.com/doc)
+- [Node](https://nodejs.org/en/)
+- [Npm](https://docs.npmjs.com/getting-started)
+- [MySQL](https://www.mysql.com/)
+
+## 🚀 Começando
+
+Para ter acesso aos arquivos do projeto você pode clonar usando o seguinte comando:
+
+```
+git clone git@github.com:yMaatheus/project-store-manager.git
+```
+
+### 🔧 Instalação
+
+Agora que já tem a pasta do projeto na sua máquina, dentro dela instale as dependências:
+
+```
+npm install
+```
+
+Crie o arquivo .env e adicione as variaveis de ambiente, siga o exemplo abaixo:
+
+```
+NODE_ENV=development
+PORT=3000
+
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_DB_NAME=blogs-api
+MYSQL_USER=root
+MYSQL_PASSWORD=password
+
+JWT_SECRET=suaSenhaSecreta
+```
+
+Crie as tabelas e popule o banco de dados:
+
+```
+npm run migration
+npm run seed
+```
+
+Então podemos rodar o projeto:
+
+```
+npm start
+```
+
+## 🛠️ Construído com
+
+* [Npm](https://docs.npmjs.com/getting-started) - Gerente de dependências
+* [Express](http://www.dropwizard.io/1.0.2/docs/) - O framework
+* [Javscript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript) - Linguagem de programação
+* [Sequelize](https://sequelize.org/) - Biblioteca ORM
+* [Joi](https://www.npmjs.com/package/joi) - Biblioteca de validação
+* [Jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) - Biblioteca JWT
+* [Swagger](https://www.npmjs.com/package/swagger-ui-express) - Ferramenta de documentação
