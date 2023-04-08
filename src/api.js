@@ -24,7 +24,7 @@ app.use('/user', handleAutorization, userRouter);
 app.use('/categories', handleAutorization, categoriesRouter);
 app.use('/post', handleAutorization, postRouter);
 
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(doc));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(doc));
 
 app.use(handleError);
 
