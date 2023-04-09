@@ -1,4 +1,4 @@
-# Project Store Manager
+# Project Blogs API
 
 Projeto realizado no módulo de Back-end durante o curso de Desenvolvimento Web pela [Trybe](https://www.betrybe.com/).
 
